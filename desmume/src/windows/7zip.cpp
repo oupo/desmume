@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <assert.h>
+#include <glib/galloca.h>
 
 #include "7zipstreams.h" // defines OutStream and InFileStream
 
@@ -28,7 +29,7 @@ static std::vector<ArchiveFormatInfo> s_formatInfos;
 
 static std::string wstrToStr(const wchar_t* wstr)
 {
-	char* str = (char*)_alloca((wcslen(wstr)+1));
+	char* str = (char*)alloca((wcslen(wstr)+1));
     sprintf(str, "%S", wstr);
 	return std::string(str);
 }
@@ -141,7 +142,7 @@ ArchiveFile::ArchiveFile(const char* filename)
 		if(len == 0)
 			continue; // because some formats have no signature
 
-		char* fileSig = (char*)_alloca(len);
+		char* fileSig = (char*)alloca(len);
 		fread(fileSig, 1, len, file);
 
 		if(!memcmp(formatSig.c_str(), fileSig, len))
@@ -205,7 +206,7 @@ ArchiveFile::ArchiveFile(const char* filename)
 					item.size = var.uhVal.LowPart;
 
 					object->GetProperty(i, kpidPath, &var);
-					std::string& path = wstrToStr(var.bstrVal);
+					std::string path = wstrToStr(var.bstrVal);
 					item.name = new char[path.size()+1];
 					strcpy(item.name, path.c_str());
 

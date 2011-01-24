@@ -988,7 +988,7 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 									Item->item.pszText = num;
 								}	return true;
 								case 2:
-									Item->item.pszText = rswatches[iNum].comment ? rswatches[iNum].comment : "";
+									Item->item.pszText = rswatches[iNum].comment ? rswatches[iNum].comment : const_cast<LPSTR>("");
 									return true;
 
 								default:

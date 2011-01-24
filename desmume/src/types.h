@@ -75,11 +75,11 @@
 #define strcasecmp(x,y) _stricmp(x,y)
 #define strncasecmp(x, y, l) strnicmp(x, y, l)
 #define snprintf _snprintf
-#else
+#elif !defined(_WIN32)
 #define WINAPI
 #endif
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(_WIN32)
 #include <limits.h>
 #ifndef PATH_MAX
 #define MAX_PATH 1024
@@ -443,13 +443,13 @@ template<typename T> inline void reconstruct(T* t) {
 
 //-------------fixed point speedup macros
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 #include <intrin.h>
 #endif
 
 FORCEINLINE s64 fx32_mul(const s32 a, const s32 b)
 {
-#ifdef _WIN32
+#ifdef _MSC_VER
 	return __emul(a,b);
 #else
 	return ((s64)a)*((s64)b);
@@ -458,7 +458,7 @@ FORCEINLINE s64 fx32_mul(const s32 a, const s32 b)
 
 FORCEINLINE s32 fx32_shiftdown(const s64 a)
 {
-#ifdef _WIN32
+#ifdef _MSC_VER
 	return (s32)__ll_rshift(a,12);
 #else
 	return (s32)(a>>12);
@@ -467,7 +467,7 @@ FORCEINLINE s32 fx32_shiftdown(const s64 a)
 
 FORCEINLINE s64 fx32_shiftup(const s32 a)
 {
-#ifdef _WIN32
+#ifdef _MSC_VER
 	return __ll_lshift(a,12);
 #else
 	return ((s64)a)<<12;

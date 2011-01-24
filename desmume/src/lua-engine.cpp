@@ -14,9 +14,9 @@
 #include "emufile.h"
 #if defined(WIN32) && !defined(WXPORT)
 #include <windows.h>
-#include "main.h"
-#include "video.h"
-#include "resource.h"
+#include "windows/main.h"
+#include "windows/video.h"
+#include "windows/resource.h"
 #endif
 #ifdef WIN32
 #include <direct.h>
@@ -154,6 +154,9 @@ static std::map<lua_CFunction, const char*> s_cFuncInfoMap;
 	#define stricmp strcasecmp
 	#define strnicmp strncasecmp
 	#define __forceinline __attribute__((always_inline))
+#ifdef __GNUC__
+	#define vscprintf(fmt,args) vsnprintf(NULL, 0, fmt, args)
+#endif
 #endif
 
 
@@ -185,7 +188,7 @@ static const char* luaCallIDStrings [] =
 	"CALL_HOTKEY_15",
 	"CALL_HOTKEY_16",
 };
-static const int _makeSureWeHaveTheRightNumberOfStrings [sizeof(luaCallIDStrings)/sizeof(*luaCallIDStrings) == LUACALL_COUNT ? 1 : 0];
+static const int _makeSureWeHaveTheRightNumberOfStrings [sizeof(luaCallIDStrings)/sizeof(*luaCallIDStrings) == LUACALL_COUNT ? 1 : 0] = {};
 
 static const char* luaMemHookTypeStrings [] =
 {
@@ -197,7 +200,7 @@ static const char* luaMemHookTypeStrings [] =
 	"MEMHOOK_READ_SUB",
 	"MEMHOOK_EXEC_SUB",
 };
-static const int _makeSureWeHaveTheRightNumberOfStrings2 [sizeof(luaMemHookTypeStrings)/sizeof(*luaMemHookTypeStrings) == LUAMEMHOOK_COUNT ? 1 : 0];
+static const int _makeSureWeHaveTheRightNumberOfStrings2 [sizeof(luaMemHookTypeStrings)/sizeof(*luaMemHookTypeStrings) == LUAMEMHOOK_COUNT ? 1 : 0] = {};
 
 void StopScriptIfFinished(int uid, bool justReturned = false);
 void SetSaveKey(LuaContextInfo& info, const char* key);
@@ -1370,7 +1373,7 @@ DEFINE_LUA_FUNCTION(bitbit, "whichbit")
 	BRET(rv);
 }
 
-int emu_wait(lua_State* L);
+static int emu_wait(lua_State* L);
 int dontworry(LuaContextInfo& info);
 
 void indicateBusy(lua_State* L, bool busy)
@@ -1597,7 +1600,7 @@ int StepEmulationAtSpeed(lua_State* L, SpeedMode speedMode, bool allowPause)
 	}
 
 	driver->USR_SetDisplayPostpone(postponeTime, drawNextFrame);
-	allowPause ? dontworry(info) : worry(L, worryIntensity);
+	allowPause ? (void)dontworry(info) : worry(L, worryIntensity);
 
 	if(!allowPause && driver->EMU_IsEmulationPaused())
 		driver->EMU_PauseEmulation(false);

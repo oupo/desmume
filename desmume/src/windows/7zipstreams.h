@@ -21,18 +21,19 @@
 #define _7ZIPSTREAMS_HEADER
 
 #include "7z/CPP/Common/MyCom.h"
+#include "7z/C/Types.h"
 
 class ICountedSequentialOutStream : public ISequentialOutStream
 {
 public:
-	virtual UINT32 Size() const = 0;
+	virtual UInt32 Size() const = 0;
 };
 
 class SeqMemoryOutStream : public ICountedSequentialOutStream, private CMyUnknownImp
 {
-	UINT8* const output;
-	UINT32 pos;
-	const UINT32 size;
+	Byte* const output;
+	UInt32 pos;
+	const UInt32 size;
 	ULONG refCount;
 
 	HRESULT STDMETHODCALLTYPE QueryInterface(REFGUID, void**)
@@ -68,14 +69,14 @@ class SeqMemoryOutStream : public ICountedSequentialOutStream, private CMyUnknow
 
 public:
 
-	SeqMemoryOutStream(void* d, UINT32 s) : output((UINT8*)d), pos(0), size(s), refCount(0) {}
+	SeqMemoryOutStream(void* d, UInt32 s) : output((Byte*)d), pos(0), size(s), refCount(0) {}
 
 	virtual ~SeqMemoryOutStream()
 	{
 		int a = 0;
 	}
 
-	UINT32 Size() const
+	UInt32 Size() const
 	{
 		return pos;
 	}
@@ -84,7 +85,7 @@ public:
 class SeqFileOutStream : public ICountedSequentialOutStream, private CMyUnknownImp
 {
 	FILE* file;
-	UINT32 pos;
+	UInt32 pos;
 	ULONG refCount;
 
 	HRESULT STDMETHODCALLTYPE QueryInterface(REFGUID, void**)
@@ -129,7 +130,7 @@ public:
 			fclose(file);
 	}
 
-	UINT32 Size() const
+	UInt32 Size() const
 	{
 		return pos;
 	}
@@ -139,7 +140,7 @@ public:
 class OutStream : public IArchiveExtractCallback, private CMyUnknownImp
 {
 	ICountedSequentialOutStream* seqStream;
-	const UINT32 index;
+	const UInt32 index;
 	ULONG refCount;
 
 	HRESULT STDMETHODCALLTYPE QueryInterface(REFGUID, void**)
@@ -191,12 +192,12 @@ class OutStream : public IArchiveExtractCallback, private CMyUnknownImp
 
 public:
 
-	OutStream(UINT32 index, void* data, UINT32 size) : index(index), refCount(0)
+	OutStream(UInt32 index, void* data, UInt32 size) : index(index), refCount(0)
 	{
 		seqStream = new SeqMemoryOutStream(data, size);
 		seqStream->AddRef();
 	}
-	OutStream(UINT32 index, const char* outFilename) : index(index), refCount(0)
+	OutStream(UInt32 index, const char* outFilename) : index(index), refCount(0)
 	{
 		seqStream = new SeqFileOutStream(outFilename);
 		seqStream->AddRef();
@@ -205,7 +206,7 @@ public:
 	{
 		//seqStream->Release(); // commented out because apparently IInArchive::Extract() calls Release one more time than it calls AddRef
 	}
-	UINT32 Size() const
+	UInt32 Size() const
 	{
 		return seqStream->Size();
 	}
@@ -237,7 +238,7 @@ class InStream : public IInStream, private IStreamGetSize, private CMyUnknownImp
 
 protected:
 
-	UINT32 size;
+	UInt32 size;
 
 public:
 

@@ -7,9 +7,6 @@
 
 #ifdef _MSC_VER
 
-#define ENOTSUP 0
-#define EOVERFLOW 0
-
 #include <time.h>
 #include <stdio.h>
 
@@ -28,13 +25,6 @@ typedef char int8_t;
 typedef int32_t ssize_t;
 
 #include <sys/stat.h>
-
-#define S_IRUSR S_IREAD
-#define S_IRGRP S_IREAD
-#define S_IROTH S_IREAD
-#define S_IWUSR S_IWRITE
-#define S_IWGRP S_IWRITE
-#define S_IWOTH S_IWRITE
 
 //struct stat {
 //	u32 st_dev;
@@ -59,13 +49,49 @@ typedef int32_t ssize_t;
 
 #endif //_MSC_VER
 
+#ifdef _WIN32
+
+#define EPERM 1
+#define ENOENT 2
+#define EIO 5
+#define EBADF 9
+#define EEXIST 17
+#define EXDEV 18
+#define ENODEV 19
+#define ENOTDIR 20
+#define EINVAL 22
+#define ENOSPC 28
+#define EROFS 30
+#define ENOTSUP 48
+#define EOVERFLOW 79
+
+#undef S_IRUSR
+#undef S_IWUSR
+#undef S_IXUSR
+#undef S_IRGRP
+#undef S_IWGRP
+#undef S_IXGRP
+#undef S_IROTH
+#undef S_IWOTH
+#undef S_IXOTH
+#define S_IRUSR 0000400
+#define S_IWUSR 0000200
+#define S_IXUSR 0000100
+#define S_IRGRP 0000040
+#define S_IWGRP 0000020
+#define S_IXGRP 0000010
+#define S_IROTH 0000004
+#define S_IWOTH 0000002
+#define S_IXOTH 0000001
+#endif
+
 struct _reent {
 	intptr_t _errno;
 };
 
 #ifdef __APPLE__
 typedef __darwin_mode_t mode_t;
-#else
+#elif !defined(__GNUC__)
 typedef uint32_t mode_t;
 #endif
 

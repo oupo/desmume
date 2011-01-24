@@ -47,8 +47,10 @@ extern const u8	logo_data[156];
 
 #else		// non Windows
 
-#define sscanf_s sscanf
+#endif
 
+#ifndef _MSC_VER
+	#define sscanf_s sscanf
 #endif
 
 template<typename T>

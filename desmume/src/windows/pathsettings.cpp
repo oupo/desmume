@@ -27,6 +27,7 @@
 #include "main.h"
 #include "path.h"
 #include "pathsettings.h"
+#include "resource.h"
 
 #define HANDLE_DLGMSG(hwnd, message, fn)										\
 	case (message): return (SetDlgMsgResult(hDlg, uMsg,							\
@@ -108,6 +109,10 @@ BOOL PathSettings_OnInitDialog(HWND hDlg, HWND hwndFocus, LPARAM lParam)
 
 	return TRUE;
 }
+
+#if defined(__MINGW32__) && !defined(BIF_NONEWFOLDERBUTTON)
+#define BIF_NONEWFOLDERBUTTON 0x200
+#endif
 
 BOOL BrowseForPath(char *pathToBrowse)
 {

@@ -152,7 +152,7 @@ OGLEXT(PFNGLDELETEFRAMEBUFFERSEXTPROC,glDeleteFramebuffersEXT);
 OGLEXT(PFNGLBLITFRAMEBUFFEREXTPROC,glBlitFramebufferEXT);
 #endif
 
-#if !defined(GL_VERSION_1_3) || defined(_MSC_VER) || defined(__INTEL_COMPILER)
+#if !defined(GL_VERSION_1_3) || defined(_MSC_VER) || defined(__INTEL_COMPILER) || defined(__MINGW32__)
 OGLEXT(PFNGLACTIVETEXTUREPROC,glActiveTexture)
 #endif
 

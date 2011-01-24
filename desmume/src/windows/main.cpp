@@ -63,7 +63,7 @@
 #include "main.h"
 #include "resource.h"
 #include "CWindow.h"
-#include "gthread.h"
+#include <glib/gthread.h>
 #include "version.h"
 #include "inputdx.h"
 #include "console.h"
@@ -518,6 +518,8 @@ LRESULT CALLBACK WifiSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 
 static int KeyInDelayMSec = 0;
 static int KeyInRepeatMSec = 8;
+
+int GetInitialModifiers(int key);
 
 template<bool JOYSTICK>
 static void InputTimer()
@@ -6074,7 +6076,7 @@ static void SoundSettings_updateSynchMode(HWND hDlg)
 	EnableWindow(GetDlgItem(hDlg,IDC_SYNCHMETHOD_P),en);
 }
 
-static LRESULT CALLBACK SoundSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK SoundSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static UINT_PTR timerid=0;
 	switch (uMsg)

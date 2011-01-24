@@ -33,6 +33,7 @@
 #include <wctype.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <glib/galloca.h>
 
 #include "directory.h"
 #include "common.h"
@@ -41,7 +42,7 @@
 #include "bit_ops.h"
 #include "filetime.h"
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__MINGW32__)
 //apple doesn't provide strnlen. how unkind
 static size_t strnlen(const char *s, size_t n)
 {
@@ -110,7 +111,7 @@ static int _FAT_directory_lfnLength (const char* name) {
 	}
 	// Make sure the name doesn't contain any control codes or codes not representable in UCS-2
 	for (i = 0; i < nameLength; i++) {
-		if (name[i] < 0x20 || name[i] >= ABOVE_UCS_RANGE) {
+		if (name[i] < 0x20 || (unsigned char)name[i] >= ABOVE_UCS_RANGE) {
 			return -1;
 		}
 	}

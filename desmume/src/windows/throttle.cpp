@@ -5,7 +5,7 @@
 #include "../common.h"
 #include "../types.h"
 #include "../debug.h"
-#include "../console.h"
+#include "console.h"
 #include "throttle.h"
 #include "GPU_osd.h"
 

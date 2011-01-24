@@ -23,13 +23,13 @@
 #include "bits.h"
 
 
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(_WIN32)
 	#include <winsock2.h> 	 
 	#include <ws2tcpip.h>
 	#define socket_t    SOCKET 	 
 	#define sockaddr_t  SOCKADDR
 	#ifndef WXPORT
-		#include "windriver.h"
+		#include "windows/windriver.h"
 	#endif
 	#define PCAP_DEVICE_NAME description
 #else

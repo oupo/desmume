@@ -117,7 +117,7 @@ INT_PTR CALLBACK MemView_DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 				wnd->selPart = 0;
 				wnd->selNewVal = 0x00000000;
 
-				wnd->SetTitle((wnd->cpu == ARMCPU_ARM9) ? "ARM9 memory":"ARM7 memory");
+				wnd->SetTitle(const_cast<char*>((wnd->cpu == ARMCPU_ARM9) ? "ARM9 memory":"ARM7 memory"));
 
 				wnd->Refresh();
 			}

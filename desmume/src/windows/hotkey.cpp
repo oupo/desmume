@@ -41,6 +41,7 @@
 #include "video.h"
 #include "winutil.h"
 #include "windriver.h"
+#include "resource.h"
 
 extern LRESULT OpenFile();	//adelikat: Made this an extern here instead of main.h  Seemed icky not to limit the scope of this function
 
@@ -114,13 +115,13 @@ void HK_QuickScreenShot(int param, bool justPressed)
 
 	switch(path.imageformat())
 	{
-	case path.PNG:
+	case PathInfo::PNG:
 		{		
 			strcat(buffer, ".png");
 			NDS_WritePNG(buffer);
 		}
 		break;
-	case path.BMP:
+	case PathInfo::BMP:
 		{
 			strcat(buffer, ".bmp");
 			NDS_WriteBMP(buffer);
@@ -504,7 +505,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->FastForwardToggle.code = "FastForwardToggle";
 	keys->FastForwardToggle.name = STRW(ID_LABEL_HK6);
 	keys->FastForwardToggle.page = HOTKEY_PAGE_MAIN;
-	keys->FastForwardToggle.key = NULL;
+	keys->FastForwardToggle.key = 0;
 
 	keys->IncreaseSpeed.handleKeyDown = HK_IncreaseSpeed;
 	keys->IncreaseSpeed.code = "IncreaseSpeed";
@@ -537,26 +538,26 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->Microphone.code = "Microphone";
 	keys->Microphone.name = STRW(ID_LABEL_HK9);
 	keys->Microphone.page = HOTKEY_PAGE_MAIN;
-	keys->Microphone.key = NULL;
+	keys->Microphone.key = 0;
 
 	keys->AutoHold.handleKeyDown = HK_AutoHoldKeyDown;
 	keys->AutoHold.handleKeyUp = HK_AutoHoldKeyUp;
 	keys->AutoHold.code = "AutoHold";
 	keys->AutoHold.name = STRW(ID_LABEL_HK10);
 	keys->AutoHold.page = HOTKEY_PAGE_MAIN;
-	keys->AutoHold.key = NULL;
+	keys->AutoHold.key = 0;
 
 	keys->StylusAutoHold.handleKeyDown = HK_StylusAutoHoldKeyDown;
 	keys->StylusAutoHold.code = "StylusAutoHold";
 	keys->StylusAutoHold.name = STRW(ID_LABEL_HK29);
 	keys->StylusAutoHold.page = HOTKEY_PAGE_MOVIE; // TODO: set more appropriate category?
-	keys->StylusAutoHold.key = NULL;
+	keys->StylusAutoHold.key = 0;
 
 	keys->AutoHoldClear.handleKeyDown = HK_AutoHoldClearKeyDown;
 	keys->AutoHoldClear.code = "AutoHoldClear";
 	keys->AutoHoldClear.name = STRW(ID_LABEL_HK11);
 	keys->AutoHoldClear.page = HOTKEY_PAGE_MAIN;
-	keys->AutoHoldClear.key = NULL;
+	keys->AutoHoldClear.key = 0;
 
 	keys->ToggleRasterizer.handleKeyDown = HK_ToggleRasterizer;
 	keys->ToggleRasterizer.code = "ToggleRasterizer";
@@ -581,37 +582,37 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->ToggleReadOnly.code = "ToggleReadOnly";
 	keys->ToggleReadOnly.name = STRW(ID_LABEL_HK24);
 	keys->ToggleReadOnly.page = HOTKEY_PAGE_MOVIE;
-	keys->ToggleReadOnly.key = NULL;
+	keys->ToggleReadOnly.key = 0;
 
 	keys->PlayMovie.handleKeyDown = HK_PlayMovie;
 	keys->PlayMovie.code = "PlayMovie";
 	keys->PlayMovie.name = STRW(ID_LABEL_HK21);
 	keys->PlayMovie.page = HOTKEY_PAGE_MOVIE;
-	keys->PlayMovie.key = NULL;
+	keys->PlayMovie.key = 0;
 
 	keys->RecordMovie.handleKeyDown = HK_RecordMovie;
 	keys->RecordMovie.code = "RecordMovie";
 	keys->RecordMovie.name = STRW(ID_LABEL_HK22);
 	keys->RecordMovie.page = HOTKEY_PAGE_MOVIE;
-	keys->RecordMovie.key = NULL;
+	keys->RecordMovie.key = 0;
 
 	keys->StopMovie.handleKeyDown = HK_StopMovie;
 	keys->StopMovie.code = "StopMovie";
 	keys->StopMovie.name = STRW(ID_LABEL_HK23);
 	keys->StopMovie.page = HOTKEY_PAGE_MOVIE;
-	keys->StopMovie.key = NULL;
+	keys->StopMovie.key = 0;
 
 	keys->RecordWAV.handleKeyDown = HK_RecordWAV;
 	keys->RecordWAV.code = "RecordWAV";
 	keys->RecordWAV.name = STRW(ID_LABEL_HK14);
 	keys->RecordWAV.page = HOTKEY_PAGE_MAIN;
-	keys->RecordWAV.key = NULL;
+	keys->RecordWAV.key = 0;
 
 	keys->RecordAVI.handleKeyDown = HK_RecordAVI;
 	keys->RecordAVI.code = "RecordAVI";
 	keys->RecordAVI.name = STRW(ID_LABEL_HK15);
 	keys->RecordAVI.page = HOTKEY_PAGE_MAIN;
-	keys->RecordAVI.key = NULL;
+	keys->RecordAVI.key = 0;
 
 	//Turbo Page---------------------------------------
 	keys->TurboRight.handleKeyDown = HK_TurboRightKeyDown;
@@ -619,84 +620,84 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->TurboRight.code = "TurboRight";
 	keys->TurboRight.name = STRW(ID_LABEL_HK41);
 	keys->TurboRight.page = HOTKEY_PAGE_TURBO;
-	keys->TurboRight.key = NULL;
+	keys->TurboRight.key = 0;
 
 	keys->TurboLeft.handleKeyDown = HK_TurboLeftKeyDown;
 	keys->TurboLeft.handleKeyUp = HK_TurboLeftKeyUp;
 	keys->TurboLeft.code = "TurboLeft";
 	keys->TurboLeft.name = STRW(ID_LABEL_HK42);
 	keys->TurboLeft.page = HOTKEY_PAGE_TURBO;
-	keys->TurboLeft.key = NULL;
+	keys->TurboLeft.key = 0;
 
 	keys->TurboR.handleKeyDown = HK_TurboRKeyDown;
 	keys->TurboR.handleKeyUp = HK_TurboRKeyUp;
 	keys->TurboR.code = "TurboR";
 	keys->TurboR.name = STRW(ID_LABEL_HK51);
 	keys->TurboR.page = HOTKEY_PAGE_TURBO;
-	keys->TurboR.key = NULL;
+	keys->TurboR.key = 0;
 
 	keys->TurboL.handleKeyDown = HK_TurboLKeyDown;
 	keys->TurboL.handleKeyUp = HK_TurboLKeyUp;
 	keys->TurboL.code = "TurboL";
 	keys->TurboL.name = STRW(ID_LABEL_HK52);
 	keys->TurboL.page = HOTKEY_PAGE_TURBO;
-	keys->TurboL.key = NULL;
+	keys->TurboL.key = 0;
 
 	keys->TurboDown.handleKeyDown = HK_TurboDownKeyDown;
 	keys->TurboDown.handleKeyUp = HK_TurboDownKeyUp;
 	keys->TurboDown.code = "TurboDown";
 	keys->TurboDown.name = STRW(ID_LABEL_HK43);
 	keys->TurboDown.page = HOTKEY_PAGE_TURBO;
-	keys->TurboDown.key = NULL;
+	keys->TurboDown.key = 0;
 
 	keys->TurboUp.handleKeyDown = HK_TurboUpKeyDown;
 	keys->TurboUp.handleKeyUp = HK_TurboUpKeyUp;
 	keys->TurboUp.code = "TurboUp";
 	keys->TurboUp.name = STRW(ID_LABEL_HK44);
 	keys->TurboUp.page = HOTKEY_PAGE_TURBO;
-	keys->TurboUp.key = NULL;
+	keys->TurboUp.key = 0;
 
 	keys->TurboB.handleKeyDown = HK_TurboBKeyDown;
 	keys->TurboB.handleKeyUp = HK_TurboBKeyUp;
 	keys->TurboB.code = "TurboB";
 	keys->TurboB.name = STRW(ID_LABEL_HK47);
 	keys->TurboB.page = HOTKEY_PAGE_TURBO;
-	keys->TurboB.key = NULL;
+	keys->TurboB.key = 0;
 
 	keys->TurboA.handleKeyDown = HK_TurboAKeyDown;
 	keys->TurboA.handleKeyUp = HK_TurboAKeyUp;
 	keys->TurboA.code = "TurboA";
 	keys->TurboA.name = STRW(ID_LABEL_HK48);
 	keys->TurboA.page = HOTKEY_PAGE_TURBO;
-	keys->TurboA.key = NULL;
+	keys->TurboA.key = 0;
 
 	keys->TurboX.handleKeyDown = HK_TurboXKeyDown;
 	keys->TurboX.handleKeyUp = HK_TurboXKeyUp;
 	keys->TurboX.code = "TurboX";
 	keys->TurboX.name = STRW(ID_LABEL_HK50);
 	keys->TurboX.page = HOTKEY_PAGE_TURBO;
-	keys->TurboX.key = NULL;
+	keys->TurboX.key = 0;
 
 	keys->TurboY.handleKeyDown = HK_TurboYKeyDown;
 	keys->TurboY.handleKeyUp = HK_TurboYKeyUp;
 	keys->TurboY.code = "TurboY";
 	keys->TurboY.name = STRW(ID_LABEL_HK49);
 	keys->TurboY.page = HOTKEY_PAGE_TURBO;
-	keys->TurboY.key = NULL;
+	keys->TurboY.key = 0;
 
 	keys->TurboSelect.handleKeyDown = HK_TurboSelectKeyDown;
 	keys->TurboSelect.handleKeyUp = HK_TurboSelectKeyUp;
 	keys->TurboSelect.code = "TurboSelect";
 	keys->TurboSelect.name = STRW(ID_LABEL_HK45);
 	keys->TurboSelect.page = HOTKEY_PAGE_TURBO;
-	keys->TurboSelect.key = NULL;
+	keys->TurboSelect.key = 0;
 
 	keys->TurboStart.handleKeyDown = HK_TurboStartKeyDown;
 	keys->TurboStart.handleKeyUp = HK_TurboStartKeyUp;
 	keys->TurboStart.code = "TurboStart";
 	keys->TurboStart.name = STRW(ID_LABEL_HK46);
 	keys->TurboStart.page = HOTKEY_PAGE_TURBO;
-	keys->TurboStart.key = NULL;
+	keys->TurboStart.key = 0;
 
 	// Movie/Tools page -----------------------------------------
 	keys->Rewind.handleKeyDown = HK_RewindKeyDown;
@@ -704,25 +705,25 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->Rewind.code = "Rewind";
 	keys->Rewind.name = STRW(ID_LABEL_HK25);
 	keys->Rewind.page = HOTKEY_PAGE_MOVIE;
-	keys->Rewind.key = NULL;
+	keys->Rewind.key = 0;
 
 	keys->NewLuaScript.handleKeyDown = HK_NewLuaScriptDown;
 	keys->NewLuaScript.code = "NewLuaScript";
 	keys->NewLuaScript.name = STRW(ID_LABEL_HK26);
 	keys->NewLuaScript.page = HOTKEY_PAGE_MOVIE;
-	keys->NewLuaScript.key = NULL;
+	keys->NewLuaScript.key = 0;
 
 	keys->CloseLuaScripts.handleKeyDown = HK_CloseLuaScriptsDown;
 	keys->CloseLuaScripts.code = "CloseLuaScripts";
 	keys->CloseLuaScripts.name = STRW(ID_LABEL_HK27);
 	keys->CloseLuaScripts.page = HOTKEY_PAGE_MOVIE;
-	keys->CloseLuaScripts.key = NULL;
+	keys->CloseLuaScripts.key = 0;
 
 	keys->MostRecentLuaScript.handleKeyDown = HK_MostRecentLuaScriptDown;
 	keys->MostRecentLuaScript.code = "MostRecentLuaScript";
 	keys->MostRecentLuaScript.name = STRW(ID_LABEL_HK28);
 	keys->MostRecentLuaScript.page = HOTKEY_PAGE_MOVIE;
-	keys->MostRecentLuaScript.key = NULL;
+	keys->MostRecentLuaScript.key = 0;
 
 	keys->LCDsMode.handleKeyUp = HK_LCDsMode;
 	keys->LCDsMode.code = "LCDsLayoutMode";
@@ -747,13 +748,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->IncreaseVolume.code = "IncreaseVolume";
 	keys->IncreaseVolume.name = STRW(ID_LABEL_HK32);
 	keys->IncreaseVolume.page = HOTKEY_PAGE_MOVIE;
-	keys->IncreaseVolume.key = NULL;
+	keys->IncreaseVolume.key = 0;
 
 	keys->DecreaseVolume.handleKeyDown = HK_DecreaseVolume;
 	keys->DecreaseVolume.code = "DecreaseVolume";
 	keys->DecreaseVolume.name = STRW(ID_LABEL_HK33);
 	keys->DecreaseVolume.page = HOTKEY_PAGE_MOVIE;
-	keys->DecreaseVolume.key = NULL;
+	keys->DecreaseVolume.key = 0;
 
 	keys->ToggleFrameCounter.handleKeyDown = HK_ToggleFrame;
 	keys->ToggleFrameCounter.code = "ToggleFrameDisplay";
@@ -765,7 +766,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->ToggleFPS.code = "ToggleFPSDisplay";
 	keys->ToggleFPS.name = STRW(ID_LABEL_HK17);
 	keys->ToggleFPS.page = HOTKEY_PAGE_MOVIE;
-	keys->ToggleFPS.key = NULL;
+	keys->ToggleFPS.key = 0;
 
 	keys->ToggleInput.handleKeyDown = HK_ToggleInput;
 	keys->ToggleInput.code = "ToggleInputDisplay";
@@ -777,26 +778,26 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->ToggleLag.code = "ToggleLagDisplay";
 	keys->ToggleLag.name = STRW(ID_LABEL_HK19);
 	keys->ToggleLag.page = HOTKEY_PAGE_MOVIE;
-	keys->ToggleLag.key = NULL;
+	keys->ToggleLag.key = 0;
 
 	keys->ResetLagCounter.handleKeyDown = HK_ResetLagCounter;
 	keys->ResetLagCounter.code = "ResetLagCounter";
 	keys->ResetLagCounter.name = STRW(ID_LABEL_HK20);
 	keys->ResetLagCounter.page = HOTKEY_PAGE_MOVIE;
-	keys->ResetLagCounter.key = NULL;
+	keys->ResetLagCounter.key = 0;
 
 	//StateSlots Page --------------------------------------------------
 	keys->NextSaveSlot.handleKeyDown = HK_NextSaveSlot;
 	keys->NextSaveSlot.code = "NextSaveSlot";
 	keys->NextSaveSlot.name = STRW(ID_LABEL_HK39);
 	keys->NextSaveSlot.page = HOTKEY_PAGE_STATE_SLOTS;
-	keys->NextSaveSlot.key = NULL;
+	keys->NextSaveSlot.key = 0;
 
 	keys->PreviousSaveSlot.handleKeyDown = HK_PreviousSaveSlot;
 	keys->PreviousSaveSlot.code = "PreviousSaveSlot";
 	keys->PreviousSaveSlot.name = STRW(ID_LABEL_HK40);
 	keys->PreviousSaveSlot.page = HOTKEY_PAGE_STATE_SLOTS;
-	keys->PreviousSaveSlot.key = NULL;
+	keys->PreviousSaveSlot.key = 0;
 	
 	keys->QuickSave.handleKeyDown = HK_StateQuickSaveSlot;
 	keys->QuickSave.code = "QuickSave";

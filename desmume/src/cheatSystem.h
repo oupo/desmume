@@ -113,8 +113,7 @@ enum CHEATS_DB_TYPE
 	CHEATS_DB_R4 = 0
 };
 
-#pragma pack(push)
-#pragma pack(1)
+#pragma pack(push,1)
 	typedef struct FAT_R4
 	{
 		u8	serial[4];

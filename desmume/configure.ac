@@ -123,6 +123,9 @@ AC_PROVIDE_IFELSE([PKG_PROG_PKG_CONFIG], [
                       glib-2.0 >= $GLIB_VER,
                       FOUND_GLIB=yes,
                       FOUND_GLIB=no)
+    if test "x$desmume_arch" = "xwindows" ; then
+      PKG_CHECK_MODULES(GTHREAD, gthread-2.0)
+    fi
 
     PKG_CHECK_MODULES(GTK,
                       gtk+-2.0 >= $GTK_VER,
@@ -184,8 +187,8 @@ AC_PROVIDE_IFELSE([PKG_PROG_PKG_CONFIG], [
     AC_MSG_ERROR([pkg-config is required to build desmume])
 ])
 
-dnl -- force lua disabled
-AM_CONDITIONAL([HAVE_LUA], [test "${HAVE_LUA}x" = "yes"])
+dnl -- force lua disabled if arch is not windows
+AM_CONDITIONAL([HAVE_LUA], [test "x$desmume_arch" = "xwindows" -a "${HAVE_LUA}" = "yes"])
 
 AM_CONDITIONAL([HAVE_OPENAL], [test "${HAVE_OPENAL}" = "yes"])
 AM_CONDITIONAL([HAVE_ALSA], [test "${HAVE_ALSA}" = "yes"])
@@ -368,6 +371,7 @@ AC_CONFIG_FILES([Makefile
                  src/gtk-glade/Makefile
                  src/gtk-glade/doc/Makefile
                  src/wx/Makefile
+                 src/windows/Makefile
 		 src/gdbstub/Makefile
 		 autopackage/default.apspec
 ])

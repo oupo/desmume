@@ -6,7 +6,7 @@
 #if defined(WIN32) && !defined(WXPORT)
 #include <winsock2.h>
 #include <windows.h>
-#include "resource.h"
+#include "windows/resource.h"
 #endif
 
 void OpenLuaContext(int uid, void(*print)(int uid, const char* str) = 0, void(*onstart)(int uid) = 0, void(*onstop)(int uid, bool statusOK) = 0);

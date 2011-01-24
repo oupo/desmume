@@ -270,10 +270,10 @@ static INT_PTR CALLBACK RecordDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam,
 			DateTime_SetSystemtime(GetDlgItem(hwndDlg, IDC_DTP_DATE), GDT_VALID, &systime);
 			DateTime_SetSystemtime(GetDlgItem(hwndDlg, IDC_DTP_TIME), GDT_VALID, &systime);
 
-			union {
-				struct { SYSTEMTIME rtcMin, rtcMax; };
-				SYSTEMTIME rtcMinMax[2];
-			};
+			SYSTEMTIME rtcMinMax[2];
+			SYSTEMTIME &rtcMin = rtcMinMax[0];
+			SYSTEMTIME &rtcMax = rtcMinMax[1];
+			
 			ZeroMemory(&rtcMin, sizeof(SYSTEMTIME));
 			ZeroMemory(&rtcMax, sizeof(SYSTEMTIME));
 			rtcMin.wYear = 2000;
