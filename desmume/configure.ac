@@ -62,9 +62,11 @@ if test ! "x$SDLCONFIG" = "x" ; then
   SDL_LIBS=`$SDLCONFIG --libs`
   AC_SUBST(SDL_CFLAGS)
   AC_SUBST(SDL_LIBS)
-else
+elif test "x$desmume_arch" != "xwindows" ; then
   AC_MSG_ERROR([sdl is required to build desmume])
 fi
+
+AM_CONDITIONAL([NEED_DESMUME_CONFIG_CPP], [test "x$desmume_arch" != "xwindows"])
 
 dnl - Check for the OpenGL includes
 AC_CHECK_HEADERS([GL/gl.h],

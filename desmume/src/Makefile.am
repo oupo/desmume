@@ -84,8 +84,11 @@ libdesmume_a_SOURCES = \
 	cheatSystem.cpp cheatSystem.h \
 	texcache.cpp texcache.h rasterize.cpp rasterize.h \
 	metaspu/metaspu.cpp metaspu/metaspu.h \
-	version.cpp version.h \
-	desmume_config.cpp desmume_config.h
+	version.cpp version.h
+
+if NEED_DESMUME_CONFIG_CPP
+libdesmume_a_SOURCES += desmume_config.cpp desmume_config.h
+endif
 
 if HAVE_GL
 libdesmume_a_SOURCES += OGLRender.cpp
