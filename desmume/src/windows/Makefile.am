@@ -2,12 +2,15 @@ include $(top_srcdir)/src/desmume.mk
 
 bin_PROGRAMS = desmume
 
-AM_CPPFLAGS += -mwindows $(LIBAGG_CFLAGS) $(GLIB_CFLAGS) $(GTHREAD_CFLAGS)
+desmume_CPPFLAGS = -D_WIN32_IE=0x0600 -DWINVER=0x0501
+desmume_CFLAGS = -mwindows -msse2
 
-desmume_LDADD = ../libdesmume.a  $(LIBAGG_LIBS) $(GLIB_LIBS) $(GTHREAD_LIBS) -lwinmm -lvfw32 -lshlwapi -lole32 \
+desmume_CPPFLAGS += $(LIBAGG_CFLAGS) $(GLIB_CFLAGS) $(GTHREAD_CFLAGS)
+
+desmume_LDADD = ../libdesmume.a  $(LIBAGG_LIBS) $(GLIB_LIBS) $(GTHREAD_LIBS) \
+	-lwinmm -lvfw32 -lshlwapi -lole32 \
 	-lddraw -ldinput8 -ldsound -ldxerr8 -ldxguid \
 	-l7z -loleaut32 -L/usr/lib/w32api -luuid
-
 
 if HAVE_GDB_STUB
 desmume_LDADD += ../gdbstub/libgdbstub.a
@@ -15,7 +18,7 @@ endif
 
 if HAVE_LUA
 desmume_LDADD += $(LUA_LIBS)
-AM_CPPFLAGS += $(LUA_CFLAGS)
+desmume_CPPFLAGS += $(LUA_CFLAGS)
 endif
 
 resources.o: resources.res
