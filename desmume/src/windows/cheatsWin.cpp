@@ -23,6 +23,7 @@
 #include "resource.h"
 #include "../debug.h"
 #include "../utils/xstring.h"
+#include <limits.h>
 
 static	u8		searchType = 0;
 static	u8		searchSize = 0;

@@ -21,6 +21,7 @@
 #include <io.h>
 #include <fstream>
 #include <time.h>
+#include <limits.h>
 #include "resource.h"
 #include "replay.h"
 #include "common.h"
