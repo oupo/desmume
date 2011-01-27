@@ -2,8 +2,9 @@ include $(top_srcdir)/src/desmume.mk
 
 bin_PROGRAMS = desmume
 
-desmume_CPPFLAGS = -D_WIN32_IE=0x0600 -DWINVER=0x0501
-desmume_CFLAGS = -mwindows -msse2
+desmume_CPPFLAGS = $(AM_CPPFLAGS) -D_WIN32_IE=0x0600 -DWINVER=0x0501
+desmume_CFLAGS = $(AM_CFLAGS) -msse2
+desmume_CXXFLAGS = $(AM_CXXFLAGS) -msse2
 
 desmume_CPPFLAGS += $(LIBAGG_CFLAGS) $(GLIB_CFLAGS) $(GTHREAD_CFLAGS)
 
