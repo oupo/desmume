@@ -2,7 +2,9 @@ include $(top_srcdir)/src/desmume.mk
 
 bin_PROGRAMS = desmume
 
-desmume_CPPFLAGS = $(AM_CPPFLAGS) -D_WIN32_IE=0x0600 -DWINVER=0x0501
+CPPFLAGS_WINVER = -D_WIN32_IE=0x0600 -DWINVER=0x0501
+
+desmume_CPPFLAGS = $(AM_CPPFLAGS) $(CPPFLAGS_WINVER)
 desmume_CFLAGS = $(AM_CFLAGS) -msse2
 desmume_CXXFLAGS = $(AM_CXXFLAGS) -msse2
 
@@ -22,8 +24,11 @@ desmume_LDADD += $(LUA_LIBS)
 desmume_CPPFLAGS += $(LUA_CFLAGS)
 endif
 
-resources.o: resources.res
-	windres resources.res $@
+resources.o: resources.rc
+	iconv -f utf-16 -t utf-8 resources.rc | \
+	sed -e 's/^    IDC_FONTCOMBO, 0x403, [0-9]\+, 0$$/\0,/' \
+	    -e 's/"\\000" $$/\0,/' | \
+	windres --codepage=65001 -o resources.o $(CPPFLAGS_WINVER)
 
 desmume_LDADD += resources.o
 desmume_DEPENDENCIES = resources.o
