@@ -70,7 +70,10 @@ AM_CONDITIONAL([NEED_DESMUME_CONFIG_CPP], [test "x$desmume_arch" != "xwindows"])
 
 dnl - Check for the OpenGL includes
 AC_CHECK_HEADERS([GL/gl.h],
-		 [AC_CHECK_HEADERS([GL/glu.h], [have_gl_h=yes LIBS="$LIBS -lGLU"], [have_gl_h=no])],
+		 [AC_CHECK_HEADERS([GL/glu.h],
+		  [have_gl_h=yes
+		   test "x$desmume_arch" != "xwindows" && LIBS="$LIBS -lGLU"],
+		  [have_gl_h=no])],
 		 [have_gl_h=no])
 if test "have_gl_h" = "no" ; then
 	AC_MSG_WARN([Building without GL support because of missing headers.])
